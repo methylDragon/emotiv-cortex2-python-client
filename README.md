@@ -4,6 +4,14 @@ Author: methylDragon
 
 ---
 
+![Image result for emotiv epoc](assets/Epoc-product-image-1562342809850.png)
+
+![Image result for emotiv logo](assets/Emotiv_logo.svg.png)
+
+Image sources: [Emotiv](emotiv.com)
+
+
+
 ## Introduction
 
 Python client for the Emotiv EEG Cortex 2 API.
@@ -35,6 +43,10 @@ API Reference: https://emotiv.gitbook.io/cortex-api/
 ## Example Usage
 
 Remember to set up your client ID and secret by [registering](https://www.emotiv.com/developer/)
+
+Also ensure you've started the EmotivApp, since it hosts the websocket server! (You'll probably have to use Windows or Mac.)
+
+If the client fails to connect, you might have to restart the script using the client.
 
 ```python
 url = "wss://localhost:6868"
@@ -126,137 +138,137 @@ while True:
 
 ### Class Helpers
 
-- send_authed_request(method=None, params={}, request=None)
-- send_request(method=None, params={}, request=None)
-- set_client_id(client_id)
-- set_client_secret(client_secret)
-- _verify_key(key, response, field=None)
-- _exit_handler(\_signo, _stack_frame)
+- `send_authed_request(method=None, params={}, request=None)`
+- `send_request(method=None, params={}, request=None)`
+- `set_client_id(client_id)`
+- `set_client_secret(client_secret)`
+- `_verify_key(key, response, field=None`)
+- `_exit_handler(\_signo, _stack_frame)`
 
 ---
 
 ### Connecting to Cortex API
 
-- get_cortex_info()
+- `get_cortex_info()`
 
 ---
 
 ### Authentication
 
-- get_user_login()
-- request_access()
-- has_access_right()
-- authorize()
-- generate_new_token()
-- get_user_information()
-- get_license_info()
+- `get_user_login()`
+- `request_access()`
+- `has_access_right()`
+- `authorize()`
+- `generate_new_token()`
+- `get_user_information()`
+- `get_license_info()`
 
 
 
 - **Helpers**
-  - authenticate()
+  - `authenticate()`
 
 ---
 
 ### Headsets
 
-- query_headsets(id=None, sync=True)
-- control_device(command, headset_id=None, mappings=None)
-- refresh_headsets()
-- connect_headset(headset_id_idx=0, headset_id=None, mappings=None)
-- disconnect_headset(headset_id)
-- update_headset(setting, headset_id, settings)
-- maximise_headset()
-- maximise_headset_no_motion()
+- `query_headsets(id=None, sync=True)`
+- `control_device(command, headset_id=None, mappings=None)`
+- `refresh_headsets()`
+- `connect_headset(headset_id_idx=0, headset_id=None, mappings=None)`
+- `disconnect_headset(headset_id)`
+- `update_headset(setting, headset_id, settings)`
+- `maximise_headset()`
+- `maximise_headset_no_motion()`
 
 
 
 - **Helpers**
-  - sync_headsets(response=None, query=True)
-  - _get_headset_type(headset_id)
+  - `sync_headsets(response=None, query=True)`
+  - `_get_headset_type(headset_id)`
 
 ---
 
 ### Sessions
 
-- create_session(headset_id_idx=0, headset_id=None)
-- create_activated_session(headset_id_idx=0, headset_id=None)
-- update_session(session_id, status)
-- activate_session(session_id_idx=0, session_id=None)
-- close_session(session_id_idx=0, session_id=None)
-- query_sessions(sync=True)
+- `create_session(headset_id_idx=0, headset_id=None)`
+- `create_activated_session(headset_id_idx=0, headset_id=None)`
+- `update_session(session_id, status)`
+- `activate_session(session_id_idx=0, session_id=None)`
+- `close_session(session_id_idx=0, session_id=None)`
+- `query_sessions(sync=True)`
 
 
 
 - **Helpers**
-  - sync_sessions(response=None, query=True)
+  - `sync_sessions(response=None, query=True)`
 
 ---
 
 ### Data Subscription
 
-- subscribe(streams, session_id_idx=0, session_id=None)
-- unsubscribe(streams, session_id_idx=0, session_id=None)
+- `subscribe(streams, session_id_idx=0, session_id=None)`
+- `unsubscribe(streams, session_id_idx=0, session_id=None)`
 
 
 
 - #### **Helpers**
   
-  - receive_data()
-  - spin_subscriber()
-  - stop_subscriber()
-  - pause_subscriber()
-  - resume_subscriber()
-  - _subscriber_thread()
-  - _create_data_streams(session_id)
-  - _delete_data_streams(session_id)
-  - _split_and_update_data_streams(data_sample)
+  - `receive_data()`
+  - `spin_subscriber()`
+  - `stop_subscriber()`
+  - `pause_subscriber()`
+  - `resume_subscriber()`
+  - `_subscriber_thread()`
+  - `_create_data_streams(session_id)`
+  - `_delete_data_streams(session_id)`
+  - `_split_and_update_data_streams(data_sample)`
 
 ---
 
 ### Records
 
-- create_record(title, session_id_idx=0, session_id=None, description=None, subject_name=None, tags=None)
-- stop_record(title, session_id_idx=0, session_id=None)
-- update_record(record_id, description=None, tags=None)
-- delete_record(record_ids)
-- export_record(record_ids, folder, format, stream_types, version=None)
-- export_edf(record_ids, folder, stream_types)
-- export_csv_v1(record_ids, folder, stream_types)
-- export_csv_v2(record_ids, folder, stream_types)
-- query_records(query, order_by={'startDatetime': "DESC"}, limit=0, offset=0, include_markers=False)
-- get_record_infos(record_ids)
+- `create_record(title, session_id_idx=0, session_id=None, description=None, subject_name=None, tags=None)`
+- `stop_record(title, session_id_idx=0, session_id=None)`
+- `update_record(record_id, description=None, tags=None)`
+- `delete_record(record_ids)`
+- `export_record(record_ids, folder, format, stream_types, version=None)`
+- `export_edf(record_ids, folder, stream_types)`
+- `export_csv_v1(record_ids, folder, stream_types)`
+- `export_csv_v2(record_ids, folder, stream_types)`
+- `query_records(query, order_by={'startDatetime': "DESC"}, limit=0, offset=0, include_markers=False)`
+- `get_record_infos(record_ids)`
 
 ---
 
 ### Markers
 
-- inject_marker(time, value, label, session_id_idx=0, session_id=None, port=None, extras=None)
-- update_marker(marker_id, time, session_id_idx=0, session_id=None, extras=None)
+- `inject_marker(time, value, label, session_id_idx=0, session_id=None, port=None, extras=None)`
+- `update_marker(marker_id, time, session_id_idx=0, session_id=None, extras=None)`
 
 ---
 
 ### BCI
 
-- query_profiles()
-- get_current_profile(headset_id_idx=0, headset_id=None)
-- setup_profile(status, profile, headset_id_idx=0, headset_id=None, new_profile_name=None)
-- create_profile(profile)
-- load_profile(profile, headset_id_idx=0, headset_id=None)
-- unload_profile(profile, headset_id_idx=0, headset_id=None)
-- save_profile(profile)
-- rename_profile(profile, headset_id_idx=0, headset_id=None, new_profile_name=None)
-- delete_profile(profile)
-- load_guest_profile(headset_id_idx=0, headset_id=None)
-- get_detection_info(detection)
-- get_mental_command_info()
-- get_facial_expression_info()
-- training(detection, status, action, session_id_idx=0, session_id=None)
-- start_training(detection, action, session_id_idx=0, session_id=None)
-- accept_training(detection, action, session_id_idx=0, session_id=None)
-- reject_training(detection, action, session_id_idx=0, session_id=None)
-- reset_training(detection, action, session_id_idx=0, session_id=None)
-- erase_training(detection, action, session_id_idx=0, session_id=None)
+- `query_profiles()`
+- `get_current_profile(headset_id_idx=0, headset_id=None)`
+- `setup_profile(status, profile, headset_id_idx=0, headset_id=None, new_profile_name=None)`
+- `create_profile(profile)`
+- `load_profile(profile, headset_id_idx=0, headset_id=None)`
+- `unload_profile(profile, headset_id_idx=0, headset_id=None)`
+- `save_profile(profile)`
+- `rename_profile(profile, headset_id_idx=0, headset_id=None, new_profile_name=None)`
+- `delete_profile(profile)`
+- `load_guest_profile(headset_id_idx=0, headset_id=None)`
+- `get_detection_info(detection)`
+- `get_mental_command_info()`
+- `get_facial_expression_info()`
+- `training(detection, status, action, session_id_idx=0, session_id=None)`
+- `start_training(detection, action, session_id_idx=0, session_id=None)`
+- `accept_training(detection, action, session_id_idx=0, session_id=None)`
+- `reject_training(detection, action, session_id_idx=0, session_id=None)`
+- `reset_training(detection, action, session_id_idx=0, session_id=None)`
+- `erase_training(detection, action, session_id_idx=0, session_id=None)`
 
 
 
@@ -264,23 +276,23 @@ while True:
 
 ### Advanced BCI
 
-- get_trained_signature_actions(detection, profile=None, session=None)
-- get_training_time(detection, session_id_idx=0, session_id=None)
-- facial_expression_signature_type(status, profile=None, session=None, signature=None)
-- get_facial_expression_signature_type(profile=None, session=None)
-- set_facial_expression_signature_type(profile=None, session=None, signature=None)
-- facial_expression_threshold(status, action, profile=None, session=None, value=None)
-- get_facial_expression_threshold(action, profile=None, session=None)
-- set_facial_expression_threshold(action, profile=None, session=None, value=None)
-- mental_command_active_action(status, profile=None, session=None, actions=[])
-- get_mental_command_active_action(profile=None, session=None)
-- set_mental_command_active_action(profile=None, session=None, actions=[])
-- mental_command_brain_map(profile=None, session=None)
-- mental_command_get_skill_rating(profile=None, session=None, action=None)
-- mental_command_training_threshold(profile=None, session=None)
-- mental_command_action_level(status, profile=None, session=None, level=None)
-- get_mental_command_action_level(profile=None, session=None)
-- set_mental_command_action_level(profile=None, session=None, level=None)
-- mental_command_action_sensitivity(status, profile=None, session=None, values=[])
-- get_mental_command_action_sensitivity(status, profile=None, session=None)
-- set_mental_command_action_sensitivity(status, profile=None, session=None, values=[])
+- `get_trained_signature_actions(detection, profile=None, session=None)`
+- `get_training_time(detection, session_id_idx=0, session_id=None)`
+- `facial_expression_signature_type(status, profile=None, session=None, signature=None)`
+- `get_facial_expression_signature_type(profile=None, session=None)`
+- `set_facial_expression_signature_type(profile=None, session=None, signature=None)`
+- `facial_expression_threshold(status, action, profile=None, session=None, value=None)`
+- `get_facial_expression_threshold(action, profile=None, session=None)`
+- `set_facial_expression_threshold(action, profile=None, session=None, value=None)`
+- `mental_command_active_action(status, profile=None, session=None, actions=[])`
+- `get_mental_command_active_action(profile=None, session=None)`
+- `set_mental_command_active_action(profile=None, session=None, actions=[])`
+- `mental_command_brain_map(profile=None, session=None)`
+- `mental_command_get_skill_rating(profile=None, session=None, action=None)`
+- `mental_command_training_threshold(profile=None, session=None)`
+- `mental_command_action_level(status, profile=None, session=None, level=None)`
+- `get_mental_command_action_level(profile=None, session=None)`
+- `set_mental_command_action_level(profile=None, session=None, level=None)`
+- `mental_command_action_sensitivity(status, profile=None, session=None, values=[])`
+- `get_mental_command_action_sensitivity(status, profile=None, session=None)`
+- `set_mental_command_action_sensitivity(status, profile=None, session=None, values=[])`
