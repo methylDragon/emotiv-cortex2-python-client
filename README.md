@@ -189,9 +189,9 @@ client.create_session(headset_id="EPOCPLUS-3B9AXXXX")
 - `refresh_headsets()`
 - `connect_headset(headset_id_idx=0, headset_id=None, mappings=None)`
 - `disconnect_headset(headset_id)`
-- `update_headset(setting, headset_id, settings)`
-- `maximise_headset()`
-- `maximise_headset_no_motion()`
+- `update_headset(settings, headset_id_idx=0, headset_id=None)`
+- `maximise_headset(headset_id_idx=0, headset_id=None)`
+- `maximise_headset_no_motion(headset_id_idx=0, headset_id=None)`
 
 
 
@@ -205,7 +205,7 @@ client.create_session(headset_id="EPOCPLUS-3B9AXXXX")
 
 - `create_session(headset_id_idx=0, headset_id=None)`
 - `create_activated_session(headset_id_idx=0, headset_id=None)`
-- `update_session(session_id, status)`
+- `update_session(status, session_id_idx=0, session_id=None)`
 - `activate_session(session_id_idx=0, session_id=None)`
 - `close_session(session_id_idx=0, session_id=None)`
 - `query_sessions(sync=True)`

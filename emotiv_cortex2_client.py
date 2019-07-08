@@ -39,14 +39,13 @@ CH3EERS!
 
 from lib.WebsocketClient import WebsocketClient
 
-from pprint import pprint
 from collections import deque, OrderedDict
 from threading import Thread, Event
 import signal
-import asyncio
 import logging
 import time
 import os
+
 
 class EmotivCortex2Client(WebsocketClient):
     """
@@ -243,7 +242,7 @@ class EmotivCortex2Client(WebsocketClient):
                     self.subscriber_reading.set()
                 else:
                     response = super().send_request(method, params, request)
-            except:
+            except Exception as e:
                 self.logger.error(str(e))
                 return {'code': -1337, 'message': "EMOTIVCORTEX2 PYTHON CLIENT ERROR: Request Failed"}
             return response
@@ -268,7 +267,7 @@ class EmotivCortex2Client(WebsocketClient):
                         return True
                 return False
         except Exception as e:
-            if field is None: # Returns True since None has no .get()
+            if field is None:  # Returns True since None has no .get()
                 return True
             else:
                 return False
@@ -358,9 +357,6 @@ class EmotivCortex2Client(WebsocketClient):
     ## Helper Methods
 
     def authenticate(self):
-        params = {'clientId': self.client_id,
-                  'clientSecret': self.client_secret}
-
         if self.approved and self.authorized:
             self.logger.info("Already authenticated!")
             return {'cortexToken': self.cortex_token}
@@ -453,10 +449,19 @@ class EmotivCortex2Client(WebsocketClient):
 
         return response
 
-    def update_headset(self, setting, headset_id, settings):
-        self.sync_headsets()
+    def update_headset(self, settings, headset_id_idx=0, headset_id=None):
+        if len(self.headsets) == 0:
+            self.sync_headsets()
 
-        assert self.connected_headsets.get(headset_id) != None, "Headset is not connected!"
+        if headset_id_idx != 0 and headset_id is not None:
+            self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
+            return
+
+        if headset_id is None:
+            headset_id = list(self.headsets)[headset_id_idx]
+            self.logger.info("Connecting: %s", str(headset_id))
+
+        assert self.connected_headsets.get(headset_id) is not None, "Headset is not connected!"
         assert self._get_headset_type(headset_id) == "EPOCPLUS", "Method supported by EPOC+ only!"
         assert self.connected_headsets[headset_id]['connectedBy'] == "usb cable", "Method supported only on wired connection only!"
 
@@ -466,36 +471,41 @@ class EmotivCortex2Client(WebsocketClient):
 
         return self.send_authed_request(method="updateHeadset", params=params)
 
-    def maximize_headset(self):
-        self.sync_headsets()
+    def maximize_headset(self, headset_id_idx=0, headset_id=None):
+        if len(self.headsets) == 0:
+            self.sync_headsets()
 
-        assert self.connected_headsets.get(headset_id) != None, "Headset is not connected!"
-        assert self._get_headset_type(headset_id) == "EPOCPLUS", "Method supported by EPOC+ only!"
-        assert self.connected_headsets[headset_id]['connectedBy'] == "usb cable", "Method supported only on wired connection only!"
+        if headset_id_idx != 0 and headset_id is not None:
+            self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
+            return
 
-        params = {'cortexToken': self.cortex_token,
-                  'headset': headset_id,
-                  'setting': {'mode': 'EPOCPLUS',
-                                       'eegRate': 256,
-                                       'memsRate': 128}}
+        if headset_id is None:
+            headset_id = list(self.headsets)[headset_id_idx]
+            self.logger.info("Connecting: %s", str(headset_id))
 
-        return self.send_authed_request(method="updateHeadset", params=params)
+        settings = {'mode': 'EPOCPLUS',
+                    'eegRate': 256,
+                    'memsRate': 128}}
 
-    def maximize_headset_no_motion(self):
-        self.sync_headsets()
+        update_headset(settings, headset_id=headset_id)
 
-        assert self.connected_headsets.get(headset_id) != None, "Headset is not connected!"
-        assert self._get_headset_type(headset_id) == "EPOCPLUS", "Method supported by EPOC+ only!"
-        assert self.connected_headsets[headset_id]['connectedBy'] == "usb cable", "Method supported only on wired connection only!"
+    def maximize_headset_no_motion(self, headset_id_idx=0, headset_id=None):
+        if len(self.headsets) == 0:
+            self.sync_headsets()
 
-        if params is None:
-            params = {'cortexToken': self.cortex_token,
-                      'headset': headset_id,
-                      'setting': {'mode': 'EPOCPLUS',
-                                           'eegRate': 256,
-                                           'memsRate': 0}}
+        if headset_id_idx != 0 and headset_id is not None:
+            self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
+            return
 
-        return self.send_authed_request(method="updateHeadset", params=params)
+        if headset_id is None:
+            headset_id = list(self.headsets)[headset_id_idx]
+            self.logger.info("Connecting: %s", str(headset_id))
+
+        settings = {'mode': 'EPOCPLUS',
+                    'eegRate': 256,
+                    'memsRate': 0}}
+
+        update_headset(settings, headset_id=headset_id)
 
     ## Helper Methods
 
@@ -526,6 +536,9 @@ class EmotivCortex2Client(WebsocketClient):
     ############################################################################
 
     def create_session(self, headset_id_idx=0, headset_id=None):
+        if len(self.headsets) == 0:
+            self.sync_headsets()
+
         if headset_id_idx != 0 and headset_id is not None:
             self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
             return
@@ -561,6 +574,9 @@ class EmotivCortex2Client(WebsocketClient):
         Activated sessions are license-activated sessions that allow for raw
         EEG data and higher resolution data.
         """
+        if len(self.headsets) == 0:
+            self.sync_headsets()
+
         if headset_id_idx != 0 and headset_id is not None:
             self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
             return
@@ -589,8 +605,16 @@ class EmotivCortex2Client(WebsocketClient):
         self.sync_sessions()
         return response
 
-    def update_session(self, session_id, status):
+    def update_session(self, status, session_id_idx=0, session_id=None):
         """General session updating method."""
+        if session_id_idx != 0 and session_id is not None:
+            self.logger.error("Invalid request: Both session ID index and session id provided! Aborting.")
+            return
+
+        if session_id is None:
+            session_id = list(self.sessions)[session_id_idx]
+            self.logger.info("Activating session %d: %s", session_id_idx, session_id)
+
         params = {'cortexToken': self.cortex_token,
                   'session': session_id,
                   'status': status}
@@ -606,7 +630,7 @@ class EmotivCortex2Client(WebsocketClient):
             session_id = list(self.sessions)[session_id_idx]
             self.logger.info("Activating session %d: %s", session_id_idx, session_id)
 
-        response = self.update_session(session_id, "active")
+        response = self.update_session("active", session_id=session_id)
 
         if response['status'] != 'activated':
             self.logger.error("Could not activate session.")
@@ -623,7 +647,7 @@ class EmotivCortex2Client(WebsocketClient):
             session_id = list(self.sessions)[session_id_idx]
             self.logger.info("Closing session %d: %s", session_id_idx, session_id)
 
-        response = self.update_session(session_id, "close")
+        response = self.update_session("close", session_id=session_id)
 
         if not self._verify_key('status', response, 'closed'):
             self.logger.error("Could not close session.")
@@ -778,7 +802,6 @@ class EmotivCortex2Client(WebsocketClient):
         # Disable server live checking as we will expect messages to drop
         self._websocket.ping_timeout = None
 
-
         self.logger.info("Subscriber thread started!")
 
     def stop_subscriber(self):
@@ -925,8 +948,7 @@ class EmotivCortex2Client(WebsocketClient):
 
     def update_record(self, record_id, description=None, tags=None):
         params = {'cortexToken': self.cortex_token,
-                  'record': record_id,
-                  'session': session_id}
+                  'record': record_id}
 
         if description is not None:
             params['description'] = description
@@ -1089,6 +1111,9 @@ class EmotivCortex2Client(WebsocketClient):
         return self.send_authed_request(method="queryProfile", params=params)
 
     def get_current_profile(self, headset_id_idx=0, headset_id=None):
+        if len(self.headsets) == 0:
+            self.sync_headsets()
+
         if headset_id_idx != 0 and headset_id is not None:
             self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
             return
@@ -1104,6 +1129,9 @@ class EmotivCortex2Client(WebsocketClient):
 
     def setup_profile(self, status, profile, headset_id_idx=0, headset_id=None, new_profile_name=None):
         """General profile setup method."""
+        if len(self.headsets) == 0:
+            self.sync_headsets()
+
         if headset_id_idx != 0 and headset_id is not None:
             self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
             return
@@ -1150,7 +1178,10 @@ class EmotivCortex2Client(WebsocketClient):
     def delete_profile(self, profile):
         self.setup_profile("delete", profile)
 
-    def load_guest_profile(self, headset_id_idx=0, headset_id):
+    def load_guest_profile(self, headset_id_idx=0, headset_id=None):
+        if len(self.headsets) == 0:
+            self.sync_headsets()
+
         if headset_id_idx != 0 and headset_id is not None:
             self.logger.error("Invalid request: Both headset ID index and headset id provided! Aborting.")
             return
@@ -1290,17 +1321,17 @@ class EmotivCortex2Client(WebsocketClient):
     def facial_expression_threshold(self, status, action, profile=None, session=None, value=None):
         assert any([status == val for val in ["get", "set"]]), "Valid statuses are: get or set"
         assert any([action == val for val in ["neutral",
-                                             "blink",
-                                             "winkL",
-                                             "winkR",
-                                             "horiEye",
-                                             "surprise",
-                                             "frown",
-                                             "smile",
-                                             "clench",
-                                             "laugh",
-                                             "smirkLeft",
-                                             "smirkRight"]]), "Valid actions are: neutral, blink, winkL, winkR, horiEye, surprise, frown, smile, clench, laugh, smirkLeft, smirkRight"
+                                              "blink",
+                                              "winkL",
+                                              "winkR",
+                                              "horiEye",
+                                              "surprise",
+                                              "frown",
+                                              "smile",
+                                              "clench",
+                                              "laugh",
+                                              "smirkLeft",
+                                              "smirkRight"]]), "Valid actions are: neutral, blink, winkL, winkR, horiEye, surprise, frown, smile, clench, laugh, smirkLeft, smirkRight"
 
         if profile is None and session is None:
             self.logger.error("Invalid request: Either profile or session must be set!")
@@ -1343,7 +1374,7 @@ class EmotivCortex2Client(WebsocketClient):
         if status == "set":
             assert type(actions) is list, "Pass in an list of actions!"
 
-            if neutral in actions:
+            if "neutral" in actions:
                 assert len(actions) <= 5, "Only a maximum of 4 actions can be activated! (Not including neutral)"
             else:
                 assert len(actions) <= 4, "Only a maximum of 4 actions can be activated! (Not including neutral)"
@@ -1498,7 +1529,7 @@ class EmotivCortex2Client(WebsocketClient):
 
         if status == "set":
             assert type(values) is list, "Pass in an list of values!"
-            assert len(actions) <= 4, "Only a maximum of 4 values can be passed in! Put them in order of the actions set in mental_command_active_action()"
+            assert len(values) <= 4, "Only a maximum of 4 values can be passed in! Put them in order of the actions set in mental_command_active_action()"
 
             for value in values:
                 assert type(value) is int, "Value elements must be int!"

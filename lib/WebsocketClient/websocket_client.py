@@ -28,7 +28,6 @@ CH3EERS!
 
 """
 
-from collections import deque
 import asyncio
 import websockets as websockets
 import json as json
@@ -36,7 +35,7 @@ import logging
 import string
 import secrets
 import ssl
-import time
+
 
 class WebsocketClient():
     """Generalised asynchronous websocket Python client."""
@@ -88,7 +87,7 @@ class WebsocketClient():
             while self._loop.is_running():
                 pass
 
-            response = loop.run_until_complete(self._recv_data())
+            response = self._loop.run_until_complete(self._recv_data())
             if response is None:
                 return
         return
@@ -204,6 +203,7 @@ class WebsocketClient():
     def _create_request(self, method, params={}):
         """Create request object."""
         if self.check_response:
-            return json.dumps({'jsonrpc': '2.0', 'method': method, 'params': params, 'id': self._generate_id()})
+            return json.dumps({'jsonrpc': '2.0', 'method': method,
+                               'params': params, 'id': self._generate_id()})
         else:
             return json.dumps({'jsonrpc': '2.0', 'method': method, 'params': params})
