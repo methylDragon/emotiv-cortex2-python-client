@@ -1,3 +1,6 @@
 *.yaml
-
 *.pyc
+
+cortex2\.egg-info/
+dist/
+build/

@@ -37,7 +37,7 @@ CH3EERS!
 
 """
 
-from lib.WebsocketClient import WebsocketClient
+from .lib.WebsocketClient import WebsocketClient
 
 from collections import deque, OrderedDict
 from threading import Thread, Event

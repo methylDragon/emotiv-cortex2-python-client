@@ -29,8 +29,8 @@ CH3EERS!
 """
 
 import asyncio
-import websockets as websockets
-import json as json
+import websockets
+import json
 import logging
 import string
 import secrets
