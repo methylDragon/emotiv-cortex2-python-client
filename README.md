@@ -14,7 +14,7 @@ Image sources: [Emotiv](emotiv.com)
 
 ## Introduction
 
-Python client for the Emotiv EEG Cortex 2 API.
+Unofficial Python client for the Emotiv EEG Cortex 2 API.
 
 Features the entire JSON-RPC API communicated via asynchronous websockets for speed.
 
