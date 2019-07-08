@@ -40,6 +40,14 @@ API Reference: https://emotiv.gitbook.io/cortex-api/
 
 
 
+## Installation
+
+```shell
+pip install cortex2
+```
+
+
+
 ## Example Usage
 
 Remember to set up your client ID and secret by [registering](https://www.emotiv.com/developer/)
@@ -49,6 +57,8 @@ Also ensure you've started the EmotivApp, since it hosts the websocket server! (
 If the client fails to connect, you might have to restart the script using the client.
 
 ```python
+from cortex2 import EmotivCortex2Client
+
 url = "wss://localhost:6868"
 
 # Remember to start the Emotiv App before you start!
