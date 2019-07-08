@@ -5,7 +5,7 @@ with open('PyPI/HISTORY.md') as history_file:
     HISTORY = history_file.read()
 
 setup_args = {'name': "cortex2",
-              'version': "1.0.0",
+              'version': "1.0.0.post1",
               'description': "Comprehensive threaded, asynchronous Python client for the Emotiv EEG Cortex 2 API",
               'long_description_content_type': "text/markdown",
               'long_description': README + '\n\n' + HISTORY,

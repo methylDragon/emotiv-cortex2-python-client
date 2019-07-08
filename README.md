@@ -4,9 +4,9 @@ Author: methylDragon
 
 ---
 
-![Image result for emotiv epoc](https://raw.githubusercontent.com/methylDragon/emotiv-cortex2-python-client/master/assets/Epoc-product-image.png)
+![Image result for emotiv epoc](./assets/Epoc-product-image.png)
 
-![Image result for emotiv logo](https://raw.githubusercontent.com/methylDragon/emotiv-cortex2-python-client/master/assets/Emotiv_logo.svg.png)
+![Image result for emotiv logo](./assets/Emotiv_logo.svg.png)
 
 Image sources: [Emotiv](emotiv.com)
 
@@ -28,7 +28,7 @@ API Reference: https://emotiv.gitbook.io/cortex-api/
 
 ## Support my efforts!
 
- [![Yeah! Buy the DRAGON a COFFEE!](https://raw.githubusercontent.com/methylDragon/emotiv-cortex2-python-client/master/assets/COFFEE%20BUTTON%20%E3%83%BE(%C2%B0%E2%88%87%C2%B0%5E).png)](https://www.buymeacoffee.com/methylDragon)
+ [![Yeah! Buy the DRAGON a COFFEE!](./assets/COFFEE%20BUTTON%20%E3%83%BE(%C2%B0%E2%88%87%C2%B0%5E).png)](https://www.buymeacoffee.com/methylDragon)
 
 [Or leave a tip! ヾ(°∇°*)](https://www.paypal.me/methylDragon)
 
@@ -37,14 +37,6 @@ API Reference: https://emotiv.gitbook.io/cortex-api/
 ## Requirements
 
 - Python 3.6 or above
-
-
-
-## Installation
-
-```shell
-pip install cortex2
-```
 
 
 
@@ -57,8 +49,6 @@ Also ensure you've started the EmotivApp, since it hosts the websocket server! (
 If the client fails to connect, you might have to restart the script using the client.
 
 ```python
-from cortex2 import EmotivCortex2Client
-
 url = "wss://localhost:6868"
 
 # Remember to start the Emotiv App before you start!
