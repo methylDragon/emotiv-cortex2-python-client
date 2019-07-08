@@ -213,7 +213,7 @@ class EmotivCortex2Client(WebsocketClient):
                     if code < 0:
                         self.generate_new_token()
                         params['cortexToken'] = self.cortex_token
-                        response =  self.send_request(method, params, request)
+                        response = self.send_request(method, params, request)
                         code = response.get('code')
 
                 if code < 0:
@@ -266,7 +266,7 @@ class EmotivCortex2Client(WebsocketClient):
                     if field in response.get(key):
                         return True
                 return False
-        except Exception as e:
+        except:
             if field is None:  # Returns True since None has no .get()
                 return True
             else:
@@ -485,9 +485,9 @@ class EmotivCortex2Client(WebsocketClient):
 
         settings = {'mode': 'EPOCPLUS',
                     'eegRate': 256,
-                    'memsRate': 128}}
+                    'memsRate': 128}
 
-        update_headset(settings, headset_id=headset_id)
+        self.update_headset(settings, headset_id=headset_id)
 
     def maximize_headset_no_motion(self, headset_id_idx=0, headset_id=None):
         if len(self.headsets) == 0:
@@ -503,9 +503,9 @@ class EmotivCortex2Client(WebsocketClient):
 
         settings = {'mode': 'EPOCPLUS',
                     'eegRate': 256,
-                    'memsRate': 0}}
+                    'memsRate': 0}
 
-        update_headset(settings, headset_id=headset_id)
+        self.update_headset(settings, headset_id=headset_id)
 
     ## Helper Methods
 
