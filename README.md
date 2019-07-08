@@ -63,6 +63,9 @@ client = EmotivCortex2Client(url,
 # Test API connection by using the request access method
 client.request_access()
 
+# Explicit call to Authenticate (approve and get Cortex Token)
+client.authenticate()
+
 # Connect to headset, connect to the first one found, and start a session for it
 client.query_headsets()
 client.connect_headset(0)
@@ -78,7 +81,7 @@ time.sleep(5)
 b = client.subscriber_messages_handled
 print((b - a) / 5)
 
-# Grad a single instance of data
+# Grab a single instance of data
 print(client.receive_data())
 
 # Continously grab data, while making requests periodically
@@ -101,6 +104,15 @@ while True:
         pass
 ```
 
+**You can also connect by explicitly stating IDs!**
+
+```python
+client.connect_headset(headset_id="EPOCPLUS-3B9AXXXX")
+client.create_session(headset_id="EPOCPLUS-3B9AXXXX")
+```
+
+**You can do a lot more! The entire API is covered, and everything generally works the same way.**
+
 
 
 ## Additional Notable Features
@@ -122,15 +134,15 @@ while True:
 | cortex_token                | str               | Cortex Token                                                 |                                                       |
 | approved                    | bool              | True if access is granted                                    |                                                       |
 | authorized                  | bool              | True if cortex token is issued                               |                                                       |
-| headsets                    | OrderedDict()     | OrderedDict of headset objects seen                          |                                                       |
-| connected_headsets          | OrderedDict()     | OrderedDict of connected headset objects                     |                                                       |
-| sessions                    | OrderedDict()     | OrderedDict of seen session objects                          |                                                       |
+| headsets                    | OrderedDict()     | OrderedDict of headset object dicts seen                     |                                                       |
+| connected_headsets          | OrderedDict()     | OrderedDict of connected headset object dicts                |                                                       |
+| sessions                    | OrderedDict()     | OrderedDict of seen session object dicts                     |                                                       |
 | data_deque_size             | int               | Maximum size of each subscriber data buffer                  |                                                       |
 | data_streams                | dict              | Sensor data streams keyed by session                         | {session_id: {data_stream_deques_types: [data]}, ...} |
 | subscribed_streams          | dict              | Data stream names and descriptions that are subscribed, keyed by session | {session_id: {stream_names: info}, ...}               |
 | subscriber_spinning         | bool              | Tracks whether the subscriber thread is running              |                                                       |
 | subscriber_messages_handled | int               | Counts how many subscriber messages have been handled        |                                                       |
-| subscriber_reading          | threading.Event() | Event flag to pause the subscriber without killing it        |
+| subscriber_reading          | threading.Event() | Event flag to pause the subscriber without killing it        |                                                       |
 
 
 
