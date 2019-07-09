@@ -1,5 +1,7 @@
 # Emotiv Cortex2 Python Client
 
+[![PyPI version](https://badge.fury.io/py/cortex2.svg)](https://badge.fury.io/py/cortex2)
+
 Author: methylDragon
 
 ---
@@ -23,6 +25,8 @@ The Cortex 2 app is used to host a websocket web server gateway interface that t
 This Python client is designed to be a wrapper client for said API. It streams multi-session sensor data using a separate asynchronous thread!
 
 API Reference: https://emotiv.gitbook.io/cortex-api/
+
+PyPI Link: <https://pypi.org/manage/project/cortex2>
 
 
 
