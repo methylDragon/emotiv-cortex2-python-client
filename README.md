@@ -81,9 +81,9 @@ client.query_headsets()
 client.connect_headset(0)
 client.create_session(0)
 
-# Subscribe to the motion and mental data streams
+# Subscribe to the motion and mental command streams
 # Spins up a separate subscription thread
-client.subscribe(streams=["mot", "met"])
+client.subscribe(streams=["mot", "com"])
 
 # Test message handling speed
 a = client.subscriber_messages_handled
