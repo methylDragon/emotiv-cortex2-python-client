@@ -26,7 +26,7 @@ This Python client is designed to be a wrapper client for said API. It streams m
 
 API Reference: https://emotiv.gitbook.io/cortex-api/
 
-PyPI Link: <https://pypi.org/manage/project/cortex2>
+PyPi Link: <https://pypi.org/project/cortex2/>
 
 
 
